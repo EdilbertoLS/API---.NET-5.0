@@ -1,3 +1,5 @@
+using API_Rest.Services;
+using API_Rest.Services.Imp;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,6 +30,9 @@ namespace API_Rest
         {
 
             services.AddControllers();
+
+            //Injeção de Dependencia
+            services.AddScoped<IPessoaService, PessoaServiceI>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API_Rest", Version = "v1" });

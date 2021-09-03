@@ -8,7 +8,7 @@ namespace API_Rest.Services
         Pessoa Create(Pessoa pessoa);
         Pessoa FindByID(long id);
         List<Pessoa> FindAll();
-        Pessoa Update(long id);
+        Pessoa Update(Pessoa pessoa);
         void Delete(long id);
     }
 }

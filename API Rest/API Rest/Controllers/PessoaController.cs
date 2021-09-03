@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using API_Rest.Model;
+using API_Rest.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -14,27 +16,53 @@ namespace API_Rest.Controllers
 
 
         private readonly ILogger<PessoaController> _logger;
-
-        public PessoaController(ILogger<PessoaController> logger)
+        private IPessoaService _pessoaService;
+        public PessoaController(ILogger<PessoaController> logger, IPessoaService pessoaService)
         {
+
             _logger = logger;
+            _pessoaService = pessoaService;
         }
 
 
 
-        //SOMA
         [HttpGet]
         public IActionResult Get()
         {
-           
 
-            return BadRequest("Invalid Input");
+
+            return Ok(_pessoaService.FindAll());
+        }
+        [HttpGet("{id}")]
+        public IActionResult Get(long id)
+        {
+            var pessoa = _pessoaService.FindByID(id);
+
+            if (pessoa == null) return NotFound();
+
+            return Ok(pessoa);
         }
 
+        [HttpPost]
+        public IActionResult Post([FromBody] Pessoa pessoa )
+        {
+            if (pessoa == null) return NotFound();
+            return Ok(_pessoaService.Create(pessoa));
+        }
     
+        [HttpPut]
+        public IActionResult Put([FromBody] Pessoa pessoa)
+        {
+            if (pessoa == null) return NotFound();
+            return Ok(_pessoaService.Update(pessoa));
+        }
 
-
-
+        [HttpDelete]
+        public IActionResult Delete(long id)
+        {
+            _pessoaService.Delete(id);
+            return NoContent();
+        }
 
     }
 }
